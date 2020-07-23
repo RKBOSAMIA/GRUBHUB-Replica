@@ -7,7 +7,7 @@ export const SignIn = user =>(
         withCredentials:true,
         url:"http://localhost:5000/buyerSignIn",
     })
-)
+);
 
 export const checkLoggedIn = async () => {
     const response = await fetch('http://localhost:5000/buyerSignIn');

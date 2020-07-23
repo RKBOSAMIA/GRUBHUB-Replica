@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import {image} from '../../../src/images/rushi.jpg'
+import { connect } from 'react-redux';
 
 const ProfileImageProps ={
         borderColor: 'gray',
@@ -27,7 +28,12 @@ const useStyles = makeStyles({
         height:'10rem',width:'10rem'
     }
 })
-export default function BuyerProfile(){
+
+const mapStateToProps= ({session}) => ({
+    session
+  });
+
+const BuyerProfile = ({session}) => {
     const classes = useStyles();
     const handleUpdate = (event)=>{
         
@@ -45,7 +51,7 @@ export default function BuyerProfile(){
                         margin="normal"
                         fullWidth
                         id="name"
-                        value = "Rushi Bosamia"
+                        value = {session.name}
                         color="secondary"
                         name="name"
                         autoComplete="name"
@@ -57,7 +63,7 @@ export default function BuyerProfile(){
                         fullWidth
                         id="email"
                         color="secondary"
-                        value="rkbosamiya95@gmail.com"
+                        value= {session.email}
                         name="email"
                         autoComplete="email"
                     />
@@ -68,7 +74,7 @@ export default function BuyerProfile(){
                         fullWidth
                         name="password"
                         color="secondary"
-                        value="dfsdff"
+                        value= {session.pwd}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -81,3 +87,8 @@ export default function BuyerProfile(){
         </div>
     );
 };
+
+export default connect(
+    mapStateToProps,
+    null
+)(BuyerProfile);

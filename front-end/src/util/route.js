@@ -28,9 +28,23 @@ const Auth = ({ loggedIn, path, component: Component }) => (
     />
   );
 
+  const BuyerProfile = ({ loggedIn, path, component: Component }) => (
+    <Route
+      path={path}
+      render={props => (
+        loggedIn ?
+        <Redirect to='/buyerProfile' />:
+        <Component {...props} />
+      )}
+    />
+  );
+
   export const AuthRoute = withRouter(
     connect(mapStateToProps)(Auth)
   );
   export const ProtectedRoute = withRouter(
     connect(mapStateToProps)(Protected)
+  );
+  export const BuyerProfileRoute = withRouter(
+    connect(mapStateToProps)(BuyerProfile)
   );

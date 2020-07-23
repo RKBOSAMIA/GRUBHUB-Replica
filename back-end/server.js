@@ -1,4 +1,3 @@
-const config = require('./config');
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
@@ -19,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(cookieParser(config.SESS_SECRET));
+app.use(cookieParser('keepitsimple'));
 app.use(session({
     //name:config.SESS_NAME,
     secret: 'keepitsimple',
