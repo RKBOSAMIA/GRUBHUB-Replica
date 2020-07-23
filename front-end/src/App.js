@@ -10,20 +10,19 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import BuyerProfile from './pages/BuyerProfile/BuyerProfile';
 import Avatar from '@material-ui/core/Avatar';
 import Home from './pages/Home/Home';
+import { AuthRoute,ProtectedRoute } from '../src/util/route';
 
 
-
-class App extends Component {
-  handleAvatar=(e)=>{
+export default function App(){
+  const handleAvatar=(e)=>{
     window.location = '/buyerProfile';
   };
-  render(){
     return (
       <div className="App">
         <AppBar position='fixed' style={{backgroundColor:'white'}}>
           <ToolBar id='toolbar'>
             <div style={{marginTop:'8px',marginLeft:'10px'}}>GRUBHUB</div>
-            <div style={{marginTop:'8px',marginLeft:'1220px',cursor:'pointer'}} onClick={this.handleAvatar}>
+            <div style={{marginTop:'8px',marginLeft:'1220px',cursor:'pointer'}} onClick={handleAvatar}>
               <Avatar/>
             </div>
           </ToolBar>
@@ -35,12 +34,12 @@ class App extends Component {
               <Switch>
                   <Redirect exact from="/" to="/landingPage"/>
                   <Route exact path="/landingPage" component={LandingPage}/>
-                  <Route exact path="/buyerSignIn" component={BuyerSignIn}/>
-                  <Route exact path="/buyerSignUp" component={BuyerSignUp}/>
+                  <AuthRoute exact path="/buyerSignIn" component={BuyerSignIn}/>
+                  <AuthRoute exact path="/buyerSignUp" component={BuyerSignUp}/>
                   <Route exact path="/ownerSignIn" component={OwnerSignIn}/>
                   <Route exact path="/ownerSignUp" component={OwnerSignUp}/>
                   <Route exact path="/buyerProfile" component={BuyerProfile}/>
-                  <Route exact path="/home" component={Home}/>
+                  <ProtectedRoute exact path="/home" component={Home}/>
               </Switch>
             </Router>
           </div>
@@ -48,7 +47,4 @@ class App extends Component {
 
       </div>
     )
-  }
 };
-
-export default App;

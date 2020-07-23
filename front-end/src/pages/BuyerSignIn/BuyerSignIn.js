@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import '../../App.css';
 import Axios from 'axios';
+import { SignIn } from '../../actions'
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,7 +30,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BuyerSignIn() {
+const mapStateToProps = ({ errors }) => ({
+    errors
+  });
+
+const mapDispatchToProps = dispatch => ({
+    SignIn : user => dispatch(SignIn(user))
+  });
+
+const BuyerSignIn = ({SignIn}) => {
 
         const classes = useStyles();
         const [email,setEmail] = useState("");
@@ -36,38 +46,29 @@ export default function BuyerSignIn() {
 
         const handleSubmit =(e) =>{
             e.preventDefault();
-            const data={
+            const user={
                 email,password
             };
-            /*Axios
-                .post('http://localhost:5000/buyerSignIn',data)
-                .then(
-                        messages=>{
-                            if(messages.error){
-                                document.getElementById('error_message').innerHTML = messages.error;
-                            }
-                        }
-                    )
-                .catch(err=>{
-                    document.getElementById('error_message').innerHTML = err;
-                });*/
-                Axios({
-                    method:"POST",
-                    data:data,
-                    withCredentials:true,
-                    url:"http://localhost:5000/buyerSignIn",
-                })
-                .then(res =>{
-                    if (res.data.message == "Authenticated Sucessfully"){
-                        window.location = "/home"
-                    }
-                    else{
-                        document.getElementById('error_message').innerHTML = res.data;
-                    }
-                })
-                .catch(err => {
-                    document.getElementById('error_message').innerHTML = err.data.message;
-                });
+            SignIn(user);
+            //window.location = '/home';
+            /*Axios({
+                method:"POST",
+                data:data,
+                withCredentials:true,
+                url:"http://localhost:5000/buyerSignIn",
+            })
+            .then(res =>{
+                if (res.data.message == "Authenticated Sucessfully"){
+                    window.location = "/home"
+                }
+                else{
+                    document.getElementById('error_message').innerHTML = res.data;
+                }
+            })
+            .catch(err => {
+                document.getElementById('error_message').innerHTML = err.data.message;
+            });*/
+
         }
         return (
             <div id='bgImg' style={{paddingTop:'100px'}}>
@@ -147,3 +148,8 @@ export default function BuyerSignIn() {
         </div>
         );
 };
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(BuyerSignIn);

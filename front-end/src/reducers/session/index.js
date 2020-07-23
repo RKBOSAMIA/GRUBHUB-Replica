@@ -1,0 +1,12 @@
+import {RECIEVE_CURRENT_USER} from '../../actions';
+
+const _nullSession = { _id:null,name:null}
+export default (state = _nullSession, action) =>{
+    Object.freeze(state);
+    switch (action.type){
+        case RECIEVE_CURRENT_USER:
+            return action.payload;
+        default:
+            return state;
+    }
+};

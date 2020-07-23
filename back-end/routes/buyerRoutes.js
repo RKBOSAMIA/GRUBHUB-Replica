@@ -58,6 +58,8 @@ app.post('/buyerSignIn',(req,res,next)=>{
         else{
             req.logIn(buyer,err=>{
                 if (err) throw err;
+                console.log(req.isAuthenticated);
+                console.log(req.user['name'])
                 res.send({message:info,username:buyer.name});
             })
         }
