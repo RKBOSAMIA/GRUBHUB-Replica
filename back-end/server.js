@@ -1,4 +1,4 @@
-import {PORT,SESS_NAME,SESS_SECRET,SESS_LIFETIME} from './config'
+const config = require('./config');
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
@@ -9,6 +9,7 @@ const buyerRoutes = require('./routes/buyerRoutes');
 const ownerRoutes = require('./routes/ownerRoutes');
 
 const app = express()
+const PORT = 5000
 const URI = 'mongodb+srv://rushikesh:rushikesh95@cluster0.copy6.mongodb.net/grub-hub?retryWrites=true&w=majority'
 
 app.use(cors({
@@ -18,13 +19,14 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(cookieParser(config.SESS_SECRET));
 app.use(session({
-    name:SESS_NAME,
-    secret: SESS_SECRET,
-    resave: true,
-    saveUninitialized: true
+    //name:config.SESS_NAME,
+    secret: 'keepitsimple',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure:true}
 }));
-app.use(cookieParser(SESS_SECRET));
 app.use(buyerRoutes);
 app.use(ownerRoutes);
 
