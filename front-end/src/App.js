@@ -7,7 +7,7 @@ import OwnerSignUp from './pages/OwnerSignUp/OwnerSignUp';
 import LandingPage from './pages/LandingPage/LandingPage';
 import BuyerProfile from './pages/BuyerProfile/BuyerProfile';
 import Home from './pages/Home/Home';
-import { AuthRoute,ProtectedRoute,BuyerProfileRoute } from '../src/util/route';
+import { AuthRoute,ProtectedRoute } from '../src/util/route';
 
 export default function App(){
     return (

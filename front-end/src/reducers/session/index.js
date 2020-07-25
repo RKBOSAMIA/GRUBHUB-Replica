@@ -1,4 +1,4 @@
-import { RECIEVE_CURRENT_USER } from '../../actions';
+import { RECIEVE_CURRENT_USER } from '../../actions/session';
 
 const _nullSession = { _id:null,name:null}
 export default (state = _nullSession, action) =>{

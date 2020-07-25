@@ -6,26 +6,24 @@ module.exports = function(passport){
     passport.use(
         new LocalStrategy({usernameField:'email'},(email,password,done)=>{
             buyerModel.findOne({email:email},(err,buyer)=>{
-                console.log(buyer);
                 if (err) {
-                    console.log("err");
                     throw err;
                 }
                 if (!buyer) {
-                    console.log("not buyer");
+                    //console.log("not buyer");
                     return done(null,false,'No User Found!!');
                 }
                 bcrypt.compare(password,buyer.pwd,(err,result)=>{
                     if (err) {
-                        console.log("compare error");
+                        //console.log("compare error");
                         throw err;
                     }
                     if (result === true){
-                        console.log('matched');
+                        //console.log('matched');
                         return done(null,buyer,'Authenticated Sucessfully');
                     }
                     else{
-                        console.log('not matched');
+                        //console.log('not matched');
                         return done(null,false,'Wrong Password!!');
                     }
                 });

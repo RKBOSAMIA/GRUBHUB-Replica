@@ -1,12 +1,21 @@
 import Axios from 'axios';
 
 export const SignIn = user =>(
-    Axios({
-        method:"POST",
-        data:user,
-        withCredentials:true,
-        url:"http://localhost:5000/buyerSignIn",
-    })
+  Axios({
+      method:"POST",
+      data:user,
+      withCredentials:true,
+      url:"http://localhost:5000/buyerSignIn",
+  })
+);
+
+export const SignUp = user =>(
+  Axios({
+    method:"POST",
+    data:user,
+    withCredentials:true,
+    url:"http://localhost:5000/buyerSignUp",
+  })
 );
 
 export const checkLoggedIn = async () => {

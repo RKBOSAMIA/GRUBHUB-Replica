@@ -10,7 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import '../../App.css'
-import axios from 'axios';
+import { useHistory } from "react-router-dom";
+import { SignUp } from '../../actions/session'
+import {connect} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,13 +30,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BuyerSignUp() {
+const mapStateToProps = ({ errors }) => ({
+    errors
+  });
+
+const mapDispatchToProps = dispatch => ({
+    SignUp : user => dispatch(SignUp(user))
+  });
+
+const BuyerSignUp = ({errors,SignUp}) => {
     
         const classes = useStyles();
         const [name,setName] = useState("");
         const [email,setEmail] = useState("");
         const [password,setPassword] = useState("");
-
+        let history = useHistory();
         const handleSubmit = (e) =>{
             e.preventDefault();
             const data={
@@ -42,13 +52,15 @@ export default function BuyerSignUp() {
                 email,
                 password
             };
-            axios
+        SignUp(data);
+        //history.push('/home');
+            /*axios
                 .post('http://localhost:5000/buyerSignUp',data)
                 .then(resp=>{
                     document.getElementById('message').innerHTML = resp.data.message;
                     window.location = '/buyerSignIn';
                 })
-                .catch(err=>{alert(err)});
+                .catch(err=>{alert(err)});*/
         };
         return (
             <div id='bgImg' style={{paddingTop:'100px'}}>
@@ -57,7 +69,7 @@ export default function BuyerSignUp() {
                     <div className={classes.paper}>
                         <Typography component="h4" variant="h6">
                         <p>CREATE YOUR GRUBHUB ACCOUNT</p>
-                        <div id='message' style={{color:'green',fontSize:'12px'}}></div>
+                        <div id='message' style={{color:'green',fontSize:'12px'}}>{errors}</div>
                         </Typography>
                         <form onSubmit={handleSubmit} noValidate>
                             <TextField
@@ -142,3 +154,8 @@ export default function BuyerSignUp() {
             </div>
         );
 };
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(BuyerSignUp);

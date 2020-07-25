@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import '../../App.css';
-import { SignIn } from '../../actions'
+import { SignIn } from '../../actions/session'
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const mapStateToProps = ({ errors }) => ({
+const mapStateToProps = ({ errors })  => ({
     errors
   });
 
@@ -37,7 +37,7 @@ const mapDispatchToProps = dispatch => ({
     SignIn : user => dispatch(SignIn(user))
   });
 
-const BuyerSignIn = ({SignIn}) => {
+const BuyerSignIn = ({errors,SignIn}) => {
 
         const classes = useStyles();
         const [email,setEmail] = useState("");
@@ -49,7 +49,6 @@ const BuyerSignIn = ({SignIn}) => {
                 email,password
             };
             SignIn(user);
-            //window.location = '/home';
             /*Axios({
                 method:"POST",
                 data:data,
@@ -75,8 +74,8 @@ const BuyerSignIn = ({SignIn}) => {
                 <CssBaseline />
                 <div className={classes.paper} >
                     <Typography component="h4" variant="h6">
-                    <p>SIGN IN WITH YOUR GRUBHUB ACCOUNT</p>
-                    <div id='error_message' style={{color:'red',fontSize:'12px'}}></div>
+                    <p>SIGN IN WITH YOUR <b>GRUBHUB</b> ACCOUNT</p>
+                    <div id='error_message' style={{color:'red',fontSize:'12px'}}>{errors}</div>
                     </Typography>
                     <form onSubmit={handleSubmit} noValidate>
                         <TextField

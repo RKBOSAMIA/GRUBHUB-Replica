@@ -1,15 +1,15 @@
-import React from 'react';
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Label from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import { RemoveRedEye } from '@material-ui/icons';
+import { InputAdornment} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import {image} from '../../../src/images/rushi.jpg'
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 const ProfileImageProps ={
         borderColor: 'gray',
@@ -35,14 +35,43 @@ const mapStateToProps= ({session}) => ({
 
 const BuyerProfile = ({session}) => {
     const classes = useStyles();
+    const _id = session._id;
+    const [name,setName] = useState(session.name);
+    const [email,setEmail] = useState(session.email);
+    const [password,setPassword] = useState(session.pwd)
     const handleUpdate = (event)=>{
-        
+        event.preventDefault();
+        const data={
+            _id,
+            name,
+            email,
+            password
+        };
+        axios
+            .post('http://localhost:5000/buyerProfile',data)
+            .then(resp=>{
+                document.getElementById('message').innerHTML = resp.data;
+                session.name = name;
+                session.email = email;
+            })
+            .catch(err=>{alert(err)});
+    };
+    const toggleVisibility = (event) => {
+        event.preventDefault();
+        var pwd = document.getElementById('password');
+        if (pwd.type === 'password'){
+            pwd.type = 'text';
+        }
+        else{
+            pwd.type = 'password';
+        }
     };
     return(
         <div style={{paddingTop:'100px'}}>
             <center><h1 style={{fontFamily:'Tahoma'}}>Account Profile</h1></center>
             <center><Avatar className={classes.ProfilePicture} alt="Set" src={require("../../../src/images/rushi.jpg")}/></center>
             <Container component="main" maxWidth="xs" style={{backgroundColor:'inherit'}}>
+            <div id='message' style={{color:'green',fontSize:'12px'}}></div>
             <CssBaseline />
                 <form noValidate>
                     <Label className={classes.Typography_Header}>Name</Label>
@@ -50,22 +79,26 @@ const BuyerProfile = ({session}) => {
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        id="name"
-                        value = {session.name}
+                        id={name}
+                        value = {name}
                         color="secondary"
                         name="name"
                         autoComplete="name"
+                        onChange={ (e)=>{
+                            setName(e.target.value)
+                        }}
                     />
                     <Label className={classes.Typography_Header}>Email</Label>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        id="email"
+                        id={email}
                         color="secondary"
-                        value= {session.email}
+                        value= {email}
                         name="email"
                         autoComplete="email"
+                        onChange={e=>setEmail(e.target.value)}
                     />
                     <Label className={classes.Typography_Header}>Password</Label>
                     <TextField
@@ -74,10 +107,19 @@ const BuyerProfile = ({session}) => {
                         fullWidth
                         name="password"
                         color="secondary"
-                        value= {session.pwd}
+                        value= {password}
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={e=>setPassword(e.target.value)}
+                        disabled
+                        InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <RemoveRedEye onClick={toggleVisibility} style={{'cursor':'pointer'}}/>
+                              </InputAdornment>
+                            ),
+                          }}
                     />
                     <Button variant="contained" color="secondary" fullWidth type="Submit" onClick={handleUpdate}>
                         Update

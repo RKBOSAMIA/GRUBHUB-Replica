@@ -40,7 +40,33 @@ app.post('/buyerSignUp',async(req,res)=>{
     const buyerDetails = await buyerModel(insertQuery);
     try{
         await buyerDetails.save();
-        res.send('Data Inserted');
+        res.send({message:'Account Created!!!',user:buyer,status:'OK'});
+    }
+    catch(err){
+        res.status(500).send(err);
+    }
+});
+
+app.post('/buyerProfile',async(req,res)=>{
+    
+    const _id = req.body._id;
+    const name = req.body.name;
+    const email = req.body.email;
+    const pwd = await bcrypt.hash(req.body.password,10);
+
+    const filter = {
+        '_id':_id
+    };
+    const updateQuery = {
+        'name':name,
+        'email': email,
+    };
+    //console.log(filter);
+    //console.log(updateQuery);
+    
+    try{
+        await buyerModel.updateOne(filter,updateQuery);
+        res.send('Details Updated');
     }
     catch(err){
         res.status(500).send(err);
@@ -53,17 +79,19 @@ app.post('/buyerSignIn',(req,res,next)=>{
             throw err;
         }
         if(!buyer) {
-            res.send(info);
+            res.send({message:info,status:'fail'});
         }
         else{
             req.logIn(buyer,err=>{
                 if (err) throw err;
-                console.log(req.isAuthenticated);
-                console.log(req.user['name'])
-                res.send({message:info,user:buyer});
+                //console.log(req.isAuthenticated);
+                //console.log(req.user['name'])
+                res.send({message:info,user:buyer,status:'OK'});
             })
         }
     })(req,res,next);
 });
+
+
 
 module.exports = app;
